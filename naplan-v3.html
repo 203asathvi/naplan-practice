@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en-AU"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NAPLAN Year 3 Practice</title>
+<style>
+:root{--bg:#fff8ec;--card:#fff;--ink:#2b2a4c;--mut:#6b6a85;--pri:#5b4bdb;--ok:#1f9d55;--bad:#d64545;--line:#e6dfcf;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1b2e;--card:#2a2945;--ink:#f2f0ff;--mut:#aaa8c8;--pri:#8f82ff;--line:#3d3b60}}
+:root[data-theme="dark"]{--bg:#1c1b2e;--card:#2a2945;--ink:#f2f0ff;--mut:#aaa8c8;--pri:#8f82ff;--line:#3d3b60}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",Verdana,sans-serif;line-height:1.45}
+main{max-width:640px;margin:0 auto;padding:18px}
+h1{font-size:1.7rem;margin:.2em 0}
+.sub{color:var(--mut);margin:0 0 16px}
+.grid{display:grid;gap:12px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px}
+.sub-btn{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.sub-btn:hover{border-color:var(--pri)}
+.ico{font-size:2rem}.sub-btn b{display:block;font-size:1.15rem}.sub-btn small{color:var(--mut)}
+.best{margin-left:auto;font-size:.85rem;color:var(--mut);text-align:right;white-space:nowrap}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--pri);transition:width .3s}
+.passage{background:var(--bg);border-left:5px solid var(--pri);padding:10px 14px;border-radius:10px;margin-bottom:12px;font-size:1.02rem}
+.q{font-size:1.25rem;font-weight:bold;margin:6px 0 14px}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-size:1.1rem;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:10px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--pri)}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 18%,var(--card))}
+.fb{padding:12px 14px;border-radius:12px;margin:6px 0 14px;background:var(--bg);border:2px dashed var(--line)}
+.go{background:var(--pri);color:#fff;border:0;border-radius:14px;padding:13px 22px;font:inherit;font-size:1.1rem;cursor:pointer}
+.ghost{background:none;border:0;color:var(--mut);font:inherit;cursor:pointer;padding:6px 0}
+.big{font-size:3rem;text-align:center;margin:0}
+.center{text-align:center}
+.stars{font-size:2.2rem;letter-spacing:4px}
+</style></head><body><main id="app"></main>
+<script>
+const SUBJ={
+num:{n:"Numeracy",i:"🔢",d:"A bit of every maths skill"},
+add:{n:"Addition",i:"➕",d:"Adding numbers, word problems, missing numbers"},
+sub:{n:"Subtraction",i:"➖",d:"Taking away, word problems, missing numbers"},
+mul:{n:"Multiplication",i:"✖️",d:"Times tables and groups"},
+div:{n:"Division",i:"➗",d:"Sharing equally and dividing"},
+place:{n:"Place Value & Patterns",i:"🔟",d:"Tens, hundreds, patterns, biggest and smallest"},
+frac:{n:"Fractions",i:"🍕",d:"Halves, quarters and fractions of amounts"},
+tm:{n:"Time & Money",i:"⏰",d:"Reading clocks and working out change"},
+geo:{n:"Shapes & Measuring",i:"🔷",d:"Sides of shapes and distance around"},
+spell:{n:"Spelling",i:"✏️",d:"Pick the correct spelling"},
+gram:{n:"Grammar & Punctuation",i:"📝",d:"Verbs, nouns, capitals & full stops"},
+read:{n:"Reading",i:"📖",d:"Read short stories and answer questions"},
+mix:{n:"Mixed Practice",i:"🌟",d:"A bit of everything"}};
+const P1="Koalas sleep for up to 20 hours each day. They live in eucalyptus trees and eat the leaves, which gives them very little energy. A baby koala is called a joey. It stays in its mother's pouch for about six months before climbing onto her back.";
+const P2="Sam woke up and heard rain on the roof. 'No park today,' he sighed. Dad smiled and pulled out a big box of blocks. By lunchtime, Sam and Dad had built a tall castle with a bridge. Sam decided rainy days were not so bad after all.";
+const P3="Maya planted a sunflower seed in a pot on the windowsill. Every day she watered it and watched. After one week, a tiny green shoot pushed out of the soil. After a month, it was as tall as her hand. By summer, a huge yellow flower turned to face the sun.";
+const P4="On Saturday, Ben found a small grey kitten shivering under a bush. It had no collar. Ben wrapped it in his jumper and carried it home. His mum helped him make posters. The next day, a girl called Zoe knocked at the door. 'That's Smokey!' she cried.";
+const Q={
+gram:[
+["Choose the best word: The dogs ___ in the park.",["was","is","were","be"],2,"'Dogs' is plural, so we use 'were'."],
+["Choose the best word: She ___ to school yesterday.",["walk","walked","walking","walks"],1,"Yesterday means past tense: walked."],
+["Which word is a verb? The cat jumped over the fence.",["cat","jumped","fence","the"],1,"A verb is an action word."],
+["Which word is an adjective? The tall girl ran home.",["girl","ran","tall","home"],2,"An adjective describes a noun. Tall describes the girl."],
+["Which sentence is written correctly?",["my brother is nine.","My brother is nine.","my Brother is Nine.","My brother is nine"],1,"Start with a capital letter and end with a full stop."],
+["What goes at the end? What is your name__",[".","?","!",","],1,"It is a question, so use a question mark."],
+["What is the plural of 'child'?",["childs","childes","children","childrens"],2,"Child is an irregular plural: children."],
+["Choose the best word: Yesterday I ___ a cake.",["make","maked","made","making"],2,"The past tense of make is made."],
+["Choose the best word: ___ going to the beach tomorrow.",["Their","There","They're","Thare"],2,"They're means 'they are'."],
+["Which is a noun?",["quickly","happy","teacher","jump"],2,"A noun is a person, place or thing."],
+["Which sentence uses a comma correctly?",["I like apples, pears and plums.","I like, apples pears and plums.","I, like apples pears and plums.","I like apples pears, and plums."],0,"Commas separate items in a list."],
+["Choose the best word: There ___ three birds in the tree.",["is","are","am","be"],1,"Three birds is plural, so use 'are'."],
+["Which word is a proper noun?",["city","Sydney","river","teacher"],1,"A proper noun names a particular person or place and starts with a capital letter."],
+["Choose the best word: He ___ his bike fast.",["ride","rides","riding","rided"],1,"With 'he' we say 'rides'."],
+["Which sentence needs a question mark?",["Where are my shoes","I like pizza","Close the door","What a great day"],0,"It asks something, so it needs a question mark."],
+["What is the opposite of 'hot'?",["warm","cold","sunny","boiling"],1,"Opposite means completely different: hot and cold."],
+["Which word means the same as 'big'?",["tiny","large","thin","small"],1,"Large and big mean the same."],
+["Choose the best word: Tom and I ___ friends.",["is","am","are","be"],2,"Tom and I is more than one person, so use 'are'."],
+["Which sentence uses the apostrophe correctly?",["The dog's bone is big.","The dogs bone' is big.","The dog's' bone is big.","The do'gs bone is big."],0,"An apostrophe + s shows that the bone belongs to the dog."],
+["Which word is an adverb? She sang loudly.",["She","sang","loudly","the"],2,"An adverb tells us how something is done."],
+["Choose the best word: I saw ___ elephant at the zoo.",["a","an","some","many"],1,"Use 'an' before a vowel sound."],
+["Which is a complete sentence?",["Running down the road.","The big dog barked.","Under the table.","Because it was late."],1,"A complete sentence has who or what, and what they did."],
+["Choose the best word: The boy ___ the ball to his friend.",["throw","thrown","threw","throwing"],2,"The past tense of throw is threw."],
+["Choose the best word: The sun ___ bright today.",["are","is","were","am"],1,"'Sun' is one thing, so use 'is'."],
+["Which word is a noun (a naming word)?",["jump","table","soft","slowly"],1,"A table is a thing, so it is a noun."],
+["Choose the best word: Yesterday we ___ to the beach.",["go","goes","went","going"],2,"Yesterday means past tense, so use 'went'."],
+["What goes at the end? Wow, that is amazing__",[".","?","!",","],2,"An exclamation mark shows excitement."],
+["Which sentence has the correct punctuation?",["Mum said, 'Dinner is ready.'","Mum said 'Dinner is ready.","Mum said, Dinner is ready.'","'Mum said, Dinner is ready."],0,"Speech marks go around the words that are spoken."],
+["Choose the best word: My sister and I ___ playing yesterday.",["was","were","is","be"],1,"My sister and I is more than one person, so use 'were'."]],
+read:[
+{p:P1,q:"How many hours a day can koalas sleep?",o:["5","10","20","24"],a:2,e:"The first sentence says up to 20 hours."},
+{p:P1,q:"What is a baby koala called?",o:["A cub","A joey","A pup","A kitten"],a:1,e:"The text says a baby koala is a joey."},
+{p:P1,q:"Why do koalas have very little energy?",o:["They run a lot","They eat eucalyptus leaves","They live in water","They are babies"],a:1,e:"The leaves give them very little energy."},
+{p:P2,q:"Why couldn't Sam go to the park?",o:["He was sick","It was raining","It was night","He had no shoes"],a:1,e:"Sam heard rain on the roof."},
+{p:P2,q:"What did Sam and Dad build?",o:["A boat","A tree house","A castle with a bridge","A tall tower of cards"],a:2,e:"They built a tall castle with a bridge."},
+{p:P2,q:"How did Sam feel at the end?",o:["Sad","Angry","Bored","Happy"],a:3,e:"He decided rainy days were not so bad."},
+{p:P3,q:"Where did Maya plant the seed?",o:["In the garden","In a pot on the windowsill","At school","In the park"],a:1,e:"The seed was planted in a pot on the windowsill."},
+{p:P3,q:"What did Maya do every day?",o:["Moved the pot","Picked the flower","Watered the seed","Sang to it"],a:2,e:"Every day she watered it and watched."},
+{p:P3,q:"What does 'tiny' mean?",o:["Very small","Very tall","Very old","Very loud"],a:0,e:"A tiny shoot is a very small shoot."},
+{p:P3,q:"What happened by summer?",o:["The seed died","A big yellow flower grew","It snowed","Maya moved away"],a:1,e:"A huge yellow flower turned to face the sun."},
+{p:P4,q:"What colour was the kitten?",o:["Black","White","Grey","Orange"],a:2,e:"Ben found a small grey kitten."},
+{p:P4,q:"Why did Ben wrap the kitten in his jumper?",o:["It was shivering","It was dirty","It was hungry","It was asleep"],a:0,e:"The kitten was shivering, so Ben kept it warm."},
+{p:P4,q:"How did Ben try to find the kitten's owner?",o:["Asked the vet","Made posters","Called the police","Went on the radio"],a:1,e:"His mum helped him make posters."},
+{p:P4,q:"Who is Zoe?",o:["Ben's sister","Ben's teacher","The kitten's owner","A vet"],a:2,e:"Zoe knew the kitten's name, Smokey, so it was hers."},
+{p:P1,q:"Why do you think koalas sleep so much?",o:["They are bored","Their food gives them little energy","They are scared","It is always night"],a:1,e:"Eucalyptus leaves give them very little energy, so they rest a lot."},
+{p:P2,q:"How did Sam probably feel when he heard the rain?",o:["Excited","Disappointed","Sleepy","Proud"],a:1,e:"He sighed and said 'No park today', so he was disappointed."},
+{p:P3,q:"What kind of person is Maya?",o:["Careless","Patient","Angry","Lazy"],a:1,e:"She watered and watched the seed for months, which shows patience."},
+{p:P4,q:"What does the story tell you about Ben?",o:["He is kind","He is greedy","He is shy","He is rude"],a:0,e:"He helped a cold kitten and looked for its owner, so he is kind."}]};
+const DB_URL="https://naplan-prep-grade3-default-rtdb.asia-southeast1.firebasedatabase.app/"; // paste your Firebase Realtime Database URL here, e.g. https://my-project-default-rtdb.firebaseio.com
+const r=(a,b)=>Math.floor(Math.random()*(b-a+1))+a,pk=a=>a[r(0,a.length-1)];
+function mk(q,ans,ds,e){ans=String(ans);const o=[ans];ds.forEach(d=>{d=String(d);if(!o.includes(d))o.push(d)});return{q,o:o.slice(0,4),a:0,e}}
+function near(n){return shuf([n+1,n-1,n+2,n-2,n+10,n-10,n+5,n-5].filter(x=>x>=0&&x!=n)).slice(0,3)}
+let LV=2;const T=(e,m,h)=>LV==1?e:LV==3?h:m;
+const NM=["Mia","Sam","Ava","Leo","Zoe","Ben"],IT=["marbles","stickers","apples","pencils","cards","shells"],PL=["ones","tens","hundreds"];
+const GEN=[
+()=>{const a=r(T(5,11,30),T(30,69,99)),b=r(T(5,11,30),T(30,69,99)),s=a+b;return mk(`What is ${a} + ${b}?`,s,near(s),`Add the tens, then add the ones.`)},
+()=>{const a=r(T(20,40,150),T(50,99,500)),b=r(T(5,11,30),a-T(5,10,20)),s=a-b;return mk(`What is ${a} − ${b}?`,s,near(s),`Take away the tens first, then the ones.`)},
+()=>{const x=pk(T([2,5,10],[2,3,4,5,6,8,10],[3,4,6,7,8,9])),y=r(2,T(5,10,12)),s=x*y;return mk(`What is ${x} × ${y}?`,s,near(s),`${x} groups of ${y} makes ${s}.`)},
+()=>{const x=pk(T([2,5,10],[2,3,4,5,10],[3,4,6,7,8,9])),y=r(2,T(5,10,12)),s=x*y;return mk(`What is ${s} ÷ ${x}?`,y,near(y),`${x} × ${y} = ${s}, so ${s} ÷ ${x} = ${y}.`)},
+()=>{const d=shuf([1,2,3,4,5,6,7,8,9]).slice(0,3),p=r(0,2),n=d[0]*100+d[1]*10+d[2],g=d[2-p],v=g*10**p;return mk(`What is the value of the ${g} in ${n}?`,v,[g,g*10,g*100,g*1000].filter(x=>x!=v).slice(0,3),`The ${g} is in the ${PL[p]} place, so it is worth ${v}.`)},
+()=>{const s=r(2,T(10,20,50)),k=pk(T([2,5,10],[2,3,4,5,10],[3,4,6,7,8,9])),t=[0,1,2,3].map(i=>s+i*k),n=s+4*k;return mk(`What comes next? ${t.join(", ")}, __`,n,near(n),`The pattern goes up by ${k} each time.`)},
+()=>{const a=r(2,T(4,6,9)),b=r(2,T(5,9,12)),n=pk(NM),i=pk(IT);return mk(`${n} has ${a} bags with ${b} ${i} in each. How many ${i} in all?`,a*b,near(a*b),`${a} × ${b} = ${a*b}.`)},
+()=>{const a=pk([2,3,4,5]),b=r(2,8),n=pk(NM),i=pk(IT);return mk(`${n} shares ${a*b} ${i} equally between ${a} friends. How many does each friend get?`,b,near(b),`${a*b} ÷ ${a} = ${b}.`)},
+()=>{const l=r(3,T(6,9,15)),w=r(2,l-1),p=2*(l+w);return mk(`A rectangle is ${l} cm long and ${w} cm wide. How far is it around the outside?`,p+" cm",near(p).map(x=>x+" cm"),`${l} + ${w} + ${l} + ${w} = ${p} cm.`)},
+()=>{const h=r(1,12),m=pk([0,15,30,45]),f=x=>`${h}:${String(x).padStart(2,"0")}`;return mk(`The short hand points at ${h}. The long hand points at ${[12,3,6,9][m/15]}. What time is it?`,f(m),[0,15,30,45].filter(x=>x!=m).map(f),`The long hand on ${[12,3,6,9][m/15]} means ${m} minutes past the hour.`)},
+()=>{const p=r(2,9),b=pk([10,20]),c=b-p;return mk(`A toy costs $${p}. You pay with a $${b} note. How much change do you get?`,"$"+c,near(c).map(x=>"$"+x),`${b} − ${p} = ${c}.`)},
+()=>{const n=r(5,45)*2;return mk(`What is half of ${n}?`,n/2,near(n/2),`Half means sharing into 2 equal groups.`)},
+()=>{const s=pk([["triangle",3],["square",4],["pentagon",5],["hexagon",6],["octagon",8]]);return mk(`How many sides does a ${s[0]} have?`,s[1],shuf([3,4,5,6,8,7].filter(x=>x!=s[1])).slice(0,3),`A ${s[0]} has ${s[1]} sides.`)},
+()=>{const d=pk([2,3,4,5]),k=r(2,6);return mk(`What is 1/${d} of ${d*k}?`,k,near(k),`Share ${d*k} into ${d} equal groups: ${k} in each.`)},
+()=>{const a=[];while(a.length<4){const x=r(100,999);if(!a.includes(x))a.push(x)}const big=Math.random()<.5,m=big?Math.max(...a):Math.min(...a);return mk(`Which is the ${big?"biggest":"smallest"} number?`,m,a.filter(x=>x!=m),`Compare the hundreds first, then the tens.`)}];
+const WORDS="beautiful|beutiful|beautifull|butiful;friend|freind|frend|firend;because|becuase|becose|becasue;people|peple|poeple|peeple;library|libary|liberry|librery;Wednesday|Wensday|Wendsday|Wedsday;different|diffrent|diferent|differant;favourite|favorit|favurite|faverite;answer|anser|answar|ansour;island|iland|ilend|iisland;school|scool|shool|schoool;bought|bort|bouht|baught;through|thru|throgh|thorugh;thought|thort|thougt|thoght;enough|enuff|enogh|inough;laugh|laff|lagh|larf;weather|wether|wheather|wheter;tomorrow|tommorow|tomorow|tommorrow;animal|animul|anamal|animall;birthday|birthdey|burthday|berthday;holiday|holliday|holidey|holaday;elephant|elephent|elefant|elaphant;chocolate|choclate|chocolat|chocolete;dinosaur|dinasaur|dinosor|dinosuar;orange|orenge|oringe|orang;water|watter|warter|wader;sandwich|sandwhich|sanwich|sandwitch;group|grup|groop|groupe;double|dubble|doble|doubel;journey|jurney|journy|jerney".split(";");
+const spq=w=>{const[c,...x]=w.split("|");return{q:"Which word is spelled correctly?",o:[c,...x],a:0,e:`The correct spelling is "${c}".`}};
+GEN.push(
+()=>{const a=r(T(5,11,30),T(30,69,99)),b=r(T(5,11,30),T(30,69,99)),n=pk(NM),i=pk(IT);return mk(`${n} has ${a} ${i}. Then ${n} gets ${b} more. How many ${i} now?`,a+b,near(a+b),`Add: ${a} + ${b} = ${a+b}.`)},
+()=>{const a=r(T(5,11,30),T(30,60,99)),b=r(T(5,11,30),T(30,60,99));return mk(`What number goes in the box? __ + ${b} = ${a+b}`,a,near(a),`${a+b} − ${b} = ${a}.`)},
+()=>{const a=r(T(20,40,150),T(50,99,500)),b=r(T(5,11,30),a-T(5,10,20)),n=pk(NM),i=pk(IT);return mk(`${n} had ${a} ${i} and gave away ${b}. How many are left?`,a-b,near(a-b),`${a} − ${b} = ${a-b}.`)},
+()=>{const a=r(T(20,40,150),T(50,99,500)),b=r(T(5,11,30),a-T(5,10,20));return mk(`What number goes in the box? ${a} − __ = ${a-b}`,b,near(b),`${a} − ${b} = ${a-b}.`)});
+const GG={add:[0,15,16],sub:[1,17,18],mul:[2,6],div:[3,7],place:[4,5,14],frac:[11,13],tm:[9,10],geo:[8,12]};
+const H={add:"Maths skills",spell:"English",mix:"Mix it up"};
+const TW={1:"friend because people school water orange group animal island answer",2:"beautiful library Wednesday different favourite birthday holiday bought double sandwich",3:"through thought enough laugh weather tomorrow elephant chocolate dinosaur journey"};
+const GT={1:[2,3,5,9,14,15,16,23,24],2:[0,1,4,6,7,11,12,13,20,25,26],3:[8,10,17,18,19,21,22,27,28]};
+Q.read.forEach((x,i)=>x.t=[1,1,2,1,1,2,1,1,2,2,1,2,2,3,3,3,3,3][i]);
+const app=document.getElementById("app");
+let S=null,REMOTE=null;
+function code(){try{return localStorage.getItem("n3code")||""}catch(e){return""}}
+function dbu(){return DB_URL.replace(/\/$/,"")+"/naplan/"+encodeURIComponent(code())+"/attempts.json"}
+async function post(a){if(!DB_URL||!code())return;try{await fetch(dbu(),{method:"POST",body:JSON.stringify(a)})}catch(e){}}
+async function sync(){if(!DB_URL||!code())return;try{const d=await(await fetch(dbu())).json();REMOTE=d?Object.values(d):[]}catch(e){}}
+function hist(){try{return JSON.parse(localStorage.getItem("n3hist")||"[]")}catch(e){return[]}}
+function level(k){const L=(DB_URL&&code()&&REMOTE)?REMOTE:hist();let v=2;L.filter(a=>a.k==k).sort((a,b)=>a.t-b.t).slice(-10).forEach(a=>{const x=a.s/a.n;if(x>=.9)v=Math.min(3,v+1);else if(x<.5)v=Math.max(1,v-1)});return v}
+function best(){const b=Object.assign({},load());(REMOTE||[]).forEach(a=>{if(a.n==10&&(b[a.k]==null||a.s>b[a.k]))b[a.k]=a.s});return b}
+function setCode(){const v=document.getElementById("fc").value.trim().toLowerCase();try{localStorage.setItem("n3code",v)}catch(e){}REMOTE=null;sync().then(home)}
+function progress(){
+const a=(REMOTE||[]).slice().sort((x,y)=>y.t-x.t),by={};
+a.forEach(x=>{(by[x.k]=by[x.k]||[]).push(x.s/x.n)});
+app.innerHTML=`<button class="ghost" onclick="home()">← Back</button><h1>📊 Progress</h1>`+(a.length?`<div class="card">`+Object.keys(by).map(k=>`<p><b>${SUBJ[k].i} ${SUBJ[k].n}</b>: ${Math.round(by[k].reduce((p,c)=>p+c,0)/by[k].length*100)}% average over ${by[k].length} tries</p>`).join("")+`</div><div class="card" style="margin-top:12px"><b>Recent tries</b>`+a.slice(0,15).map(x=>`<p style="margin:6px 0">${new Date(x.t).toLocaleDateString("en-AU")} · ${SUBJ[x.k].n} · <b>${x.s}/${x.n}</b>${x.ms?" · "+Math.round(x.ms/x.n/1000)+"s per question":""}${x.rv?" · "+x.rv+" to revise":""}</p>`).join("")+`</div>`:`<p class="sub">No shared results yet. ${DB_URL&&code()?"Finish a quiz and it will show up here.":"Sharing needs a database URL and a family code."}</p>`)}
+function load(){try{return JSON.parse(localStorage.getItem("naplan3")||"{}")}catch(e){return{}}}
+function save(k,v){try{const d=load();d[k]=Math.max(d[k]||0,v);localStorage.setItem("naplan3",JSON.stringify(d))}catch(e){}}
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function norm(x){return Array.isArray(x)?{q:x[0],o:x[1],a:x[2],e:x[3]}:x}
+function home(){
+if(S)clearInterval(S.iv);
+const b=best();
+app.innerHTML=`<h1>🎒 NAPLAN Year 3 Practice</h1><p class="sub">Pick a topic and have a go. Take your time and read each question carefully!</p><div class="grid">`+
+Object.entries(SUBJ).map(([k,v])=>(H[k]?`<h3 class="sub" style="margin:10px 0 0">${H[k]}</h3>`:"")+`<button class="card sub-btn" onclick="start('${k}')"><span class="ico">${v.i}</span><span><b>${v.n}</b><small>${v.d}</small></span><span class="best">${b[k]!=null?"Best: "+b[k]+"/10":""}${k!="mix"?"<br>Level: "+["","Easy","Standard","Challenge"][level(k)]:""}</span></button>`).join("")+`</div><div class="card" style="margin-top:14px"><b>👪 Family code</b><p class="sub" style="margin:4px 0 8px;font-size:.85rem">${DB_URL?"Type the same code on every device to share scores.":"Sharing is not switched on yet (no database URL set)."}</p><input id="fc" value="${code()}" placeholder="e.g. blue-koala-42" style="font:inherit;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);width:55%"> <button class="go" style="padding:10px 16px" onclick="setCode()">Save</button><br><button class="ghost" onclick="sync().then(progress)">📊 View progress</button></div><p class="sub" style="margin-top:18px;font-size:.85rem">This is a practice site with sample-style questions. It is not an official NAPLAN test. Writing practice: ask a grown-up to give you a story topic and write for 20 minutes!</p>`}
+function start(k){
+let pool;LV=level("num");
+const g=n=>Array.from({length:n},()=>pk(GEN)()),
+tier=(a,L,n)=>{const adj=L==2?pk([1,3]):2,m=Math.round(n*.7);return shuf([...shuf(a(L)).slice(0,m),...shuf(a(adj)).slice(0,n-m)])},
+sp=(n,L)=>tier(t=>WORDS.filter(w=>TW[t].split(" ").includes(w.split("|")[0])),L,n).map(spq),
+gr=(n,L)=>tier(t=>GT[t].map(i=>Q.gram[i]),L,n),
+rd=L=>{const ps=shuf([P1,P2,P3,P4]).slice(0,3);return Q.read.filter(x=>ps.includes(x.p)&&(L==1?x.t<3:L==3?x.t>1:true))};
+if(k=="mix")pool=shuf([...g(4),...sp(2,level("spell")),...gr(2,level("gram")),...shuf(Q.read).slice(0,2)]);
+else if(GG[k]){LV=level(k);pool=Array.from({length:10},()=>GEN[pk(GG[k])]())}
+else if(k=="num")pool=g(10);
+else if(k=="spell")pool=sp(10,level("spell"));
+else if(k=="read")pool=rd(level("read"));
+else pool=gr(10,level("gram"));
+pool=pool.map(norm);pool.forEach((x,i)=>x.id=i);
+S={k,qs:pool,i:0,score:0,d:0,total:pool.length,log:[],miss:{}};show()}
+function show(){
+clearInterval(S.iv);
+const q=S.qs[S.i],pct=S.d/S.total*100,ord=shuf(q.o.map((t,i)=>i));
+S.t0=Date.now();
+app.innerHTML=`<button class="ghost" onclick="home()">← Back</button><div class="bar"><i style="width:${pct}%"></i></div><div class="card"><div style="display:flex;justify-content:space-between;color:var(--mut);font-size:.9rem;margin-bottom:6px"><span>${q.rev?"🔁 Revision: you missed this one, try again":"Question "+(S.d+1)+" of "+S.total}</span><span id="tm">⏱ 0s</span></div>${q.p?`<div class="passage">${q.p}</div>`:""}<div class="q">${q.q}</div>`+
+ord.map(i=>`<button class="opt" data-i="${i}" onclick="pick(${i})">${q.o[i]}</button>`).join("")+`<div id="fb"></div></div>`;
+S.iv=setInterval(()=>{const e=document.getElementById("tm");if(e)e.textContent="⏱ "+Math.floor((Date.now()-S.t0)/1000)+"s"},500)}
+function pick(i){
+clearInterval(S.iv);
+const q=S.qs[S.i],right=i==q.a,ms=Date.now()-S.t0;
+document.querySelectorAll(".opt").forEach(b=>{b.disabled=true;const n=+b.dataset.i;if(n==q.a)b.classList.add("ok");else if(n==i)b.classList.add("bad")});
+S.log.push({q:q.q,ok:right,ms,rev:!!q.rev});
+if(right){S.d++;if(!q.rev)S.score++}
+else{const m=S.miss[q.id]=S.miss[q.id]||{q:q.q,ans:q.o[q.a],e:q.e,tries:0};m.tries++;S.qs.splice(S.i+1,0,Object.assign({},q,{rev:true}))}
+const last=S.i==S.qs.length-1;
+document.getElementById("fb").innerHTML=`<div class="fb">${right?"✅ <b>Correct!</b> ":"❌ <b>Not quite.</b> "}${q.e}${right?"":"<br><b>You'll get this one again next, so you can try again.</b>"} <br><small>⏱ ${(ms/1000).toFixed(0)}s</small></div><button class="go" onclick="next()">${last?"See my score":"Next →"}</button>`}
+function next(){S.i++;S.i<S.qs.length?show():done()}
+function done(){
+clearInterval(S.iv);
+const n=S.total,s=S.score,st=s/n>=.9?3:s/n>=.7?2:s/n>=.4?1:0;
+if(n==10)save(S.k,s);
+const ms=S.log.reduce((a,x)=>a+x.ms,0),miss=Object.values(S.miss),fm=x=>Math.round(x/1000)+"s";
+const L0=level(S.k),at={t:Date.now(),k:S.k,s,n,ms,rv:miss.length};post(at);if(DB_URL&&code())REMOTE=(REMOTE||[]).concat([at]);try{const h=hist();h.push(at);localStorage.setItem("n3hist",JSON.stringify(h.slice(-40)))}catch(e){}const L1=level(S.k);
+const msg=st==3?"Superstar! Amazing work!":st==2?"Great job! Nearly there!":st==1?"Good effort! Practice makes perfect.":"Keep trying, you will get better each time!";
+const first=S.log.filter(x=>!x.rev);
+app.innerHTML=`<div class="card center"><p class="big">${st==3?"🏆":st==2?"🎉":"💪"}</p><h1>${s} / ${n}</h1><div class="stars">${"⭐".repeat(st)}${"☆".repeat(3-st)}</div><p>${msg}</p>${S.k!="mix"&&L1!=L0?(L1>L0?"<p><b>⬆️ Level up! The questions get trickier.</b></p>":"<p>⬇️ Next time will be a little easier.</p>"):""}<p>⏱ Total ${fm(ms)} · about ${fm(ms/S.log.length)} per answer</p><button class="go" onclick="start('${S.k}')">Try again</button><br><button class="ghost" onclick="home()">Back to topics</button></div>`+
+(miss.length?`<div class="card" style="margin-top:12px"><b>🔁 Questions to revise</b>`+miss.map(m=>`<p style="margin:10px 0"><b>${m.q}</b><br>✅ ${m.ans}<br><small>${m.e} (missed ${m.tries}×)</small></p>`).join("")+`</div>`:`<div class="card" style="margin-top:12px">🎯 No mistakes to revise. Well done!</div>`)+
+`<div class="card" style="margin-top:12px"><b>⏱ Time per question</b>`+first.map((x,i)=>`<p style="margin:6px 0">${i+1}. ${x.q.length>48?x.q.slice(0,48)+"…":x.q} <b>${fm(x.ms)}</b> ${x.ok?"✅":"❌"}</p>`).join("")+`</div>`}
+home();sync().then(()=>{if(document.querySelector(".sub-btn"))home()});
+</script></body></html>
