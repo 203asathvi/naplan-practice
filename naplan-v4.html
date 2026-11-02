@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en-AU"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NAPLAN Year 3 Practice</title>
+<style>
+:root{--bg:#fff8ec;--card:#fff;--ink:#2b2a4c;--mut:#6b6a85;--pri:#5b4bdb;--ok:#1f9d55;--bad:#d64545;--line:#e6dfcf;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1c1b2e;--card:#2a2945;--ink:#f2f0ff;--mut:#aaa8c8;--pri:#8f82ff;--line:#3d3b60}}
+:root[data-theme="dark"]{--bg:#1c1b2e;--card:#2a2945;--ink:#f2f0ff;--mut:#aaa8c8;--pri:#8f82ff;--line:#3d3b60}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",Verdana,sans-serif;line-height:1.45}
+main{max-width:640px;margin:0 auto;padding:18px}
+h1{font-size:1.7rem;margin:.2em 0}
+.sub{color:var(--mut);margin:0 0 16px}
+.grid{display:grid;gap:12px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:16px}
+.sub-btn{display:flex;align-items:center;gap:14px;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer}
+.sub-btn:hover{border-color:var(--pri)}
+.ico{font-size:2rem}.sub-btn b{display:block;font-size:1.15rem}.sub-btn small{color:var(--mut)}
+.best{margin-left:auto;font-size:.85rem;color:var(--mut);text-align:right;white-space:nowrap}
+.bar{height:10px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--pri);transition:width .3s}
+.passage{background:var(--bg);border-left:5px solid var(--pri);padding:10px 14px;border-radius:10px;margin-bottom:12px;font-size:1.02rem}
+.q{font-size:1.25rem;font-weight:bold;margin:6px 0 14px}
+.opt{display:block;width:100%;text-align:left;font:inherit;font-size:1.1rem;color:var(--ink);background:var(--card);border:2px solid var(--line);border-radius:14px;padding:13px 15px;margin-bottom:10px;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--pri)}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card))}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 18%,var(--card))}
+.fb{padding:12px 14px;border-radius:12px;margin:6px 0 14px;background:var(--bg);border:2px dashed var(--line)}
+.go{background:var(--pri);color:#fff;border:0;border-radius:14px;padding:13px 22px;font:inherit;font-size:1.1rem;cursor:pointer}
+.ghost{background:none;border:0;color:var(--mut);font:inherit;cursor:pointer;padding:6px 0}
+.big{font-size:3rem;text-align:center;margin:0}
+.center{text-align:center}
+.pill{font:inherit;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:20px;padding:8px 14px;margin:6px 6px 0 0;cursor:pointer}
+.pill.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.track{position:relative;height:28px;background:var(--line);border-radius:14px;margin:4px 0 4px;overflow:hidden}
+.tbar{position:absolute;inset:0 auto 0 0;width:0;border-radius:14px;opacity:.55}
+.rn{position:absolute;top:0;left:0;font-size:1.3rem;line-height:28px}
+.fin{position:absolute;right:6px;top:0;line-height:28px}
+.tmt{font-size:.95rem;color:var(--mut);margin-bottom:8px;font-weight:bold}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .35s}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.25)}100%{transform:scale(1);opacity:1}}
+.pop{display:inline-block;animation:pop .4s}
+.stars{font-size:2.2rem;letter-spacing:4px}
+</style></head><body><main id="app"></main>
+<script>
+const SUBJ={
+num:{n:"Numeracy",i:"🔢",d:"A bit of every maths skill"},
+add:{n:"Addition",i:"➕",d:"Adding numbers, word problems, missing numbers"},
+sub:{n:"Subtraction",i:"➖",d:"Taking away, word problems, missing numbers"},
+mul:{n:"Multiplication",i:"✖️",d:"Times tables and groups"},
+div:{n:"Division",i:"➗",d:"Sharing equally and dividing"},
+place:{n:"Place Value & Patterns",i:"🔟",d:"Tens, hundreds, patterns, biggest and smallest"},
+frac:{n:"Fractions",i:"🍕",d:"Halves, quarters and fractions of amounts"},
+tm:{n:"Time & Money",i:"⏰",d:"Reading clocks and working out change"},
+geo:{n:"Shapes & Measuring",i:"🔷",d:"Sides of shapes and distance around"},
+spell:{n:"Spelling",i:"✏️",d:"Pick the correct spelling"},
+gram:{n:"Grammar & Punctuation",i:"📝",d:"Verbs, nouns, capitals & full stops"},
+read:{n:"Reading",i:"📖",d:"Read short stories and answer questions"},
+words:{n:"Word Lab",i:"🔤",d:"Learn words: hear them, see meanings, practise spelling"},
+mix:{n:"Mixed Practice",i:"🌟",d:"A bit of everything"}};
+const P1="Koalas sleep for up to 20 hours each day. They live in eucalyptus trees and eat the leaves, which gives them very little energy. A baby koala is called a joey. It stays in its mother's pouch for about six months before climbing onto her back.";
+const P2="Sam woke up and heard rain on the roof. 'No park today,' he sighed. Dad smiled and pulled out a big box of blocks. By lunchtime, Sam and Dad had built a tall castle with a bridge. Sam decided rainy days were not so bad after all.";
+const P3="Maya planted a sunflower seed in a pot on the windowsill. Every day she watered it and watched. After one week, a tiny green shoot pushed out of the soil. After a month, it was as tall as her hand. By summer, a huge yellow flower turned to face the sun.";
+const P4="On Saturday, Ben found a small grey kitten shivering under a bush. It had no collar. Ben wrapped it in his jumper and carried it home. His mum helped him make posters. The next day, a girl called Zoe knocked at the door. 'That's Smokey!' she cried.";
+const Q={
+gram:[
+["Choose the best word: The dogs ___ in the park.",["was","is","were","be"],2,"'Dogs' is plural, so we use 'were'."],
+["Choose the best word: She ___ to school yesterday.",["walk","walked","walking","walks"],1,"Yesterday means past tense: walked."],
+["Which word is a verb? The cat jumped over the fence.",["cat","jumped","fence","the"],1,"A verb is an action word."],
+["Which word is an adjective? The tall girl ran home.",["girl","ran","tall","home"],2,"An adjective describes a noun. Tall describes the girl."],
+["Which sentence is written correctly?",["my brother is nine.","My brother is nine.","my Brother is Nine.","My brother is nine"],1,"Start with a capital letter and end with a full stop."],
+["What goes at the end? What is your name__",[".","?","!",","],1,"It is a question, so use a question mark."],
+["What is the plural of 'child'?",["childs","childes","children","childrens"],2,"Child is an irregular plural: children."],
+["Choose the best word: Yesterday I ___ a cake.",["make","maked","made","making"],2,"The past tense of make is made."],
+["Choose the best word: ___ going to the beach tomorrow.",["Their","There","They're","Thare"],2,"They're means 'they are'."],
+["Which is a noun?",["quickly","happy","teacher","jump"],2,"A noun is a person, place or thing."],
+["Which sentence uses a comma correctly?",["I like apples, pears and plums.","I like, apples pears and plums.","I, like apples pears and plums.","I like apples pears, and plums."],0,"Commas separate items in a list."],
+["Choose the best word: There ___ three birds in the tree.",["is","are","am","be"],1,"Three birds is plural, so use 'are'."],
+["Which word is a proper noun?",["city","Sydney","river","teacher"],1,"A proper noun names a particular person or place and starts with a capital letter."],
+["Choose the best word: He ___ his bike fast.",["ride","rides","riding","rided"],1,"With 'he' we say 'rides'."],
+["Which sentence needs a question mark?",["Where are my shoes","I like pizza","Close the door","What a great day"],0,"It asks something, so it needs a question mark."],
+["What is the opposite of 'hot'?",["warm","cold","sunny","boiling"],1,"Opposite means completely different: hot and cold."],
+["Which word means the same as 'big'?",["tiny","large","thin","small"],1,"Large and big mean the same."],
+["Choose the best word: Tom and I ___ friends.",["is","am","are","be"],2,"Tom and I is more than one person, so use 'are'."],
+["Which sentence uses the apostrophe correctly?",["The dog's bone is big.","The dogs bone' is big.","The dog's' bone is big.","The do'gs bone is big."],0,"An apostrophe + s shows that the bone belongs to the dog."],
+["Which word is an adverb? She sang loudly.",["She","sang","loudly","the"],2,"An adverb tells us how something is done."],
+["Choose the best word: I saw ___ elephant at the zoo.",["a","an","some","many"],1,"Use 'an' before a vowel sound."],
+["Which is a complete sentence?",["Running down the road.","The big dog barked.","Under the table.","Because it was late."],1,"A complete sentence has who or what, and what they did."],
+["Choose the best word: The boy ___ the ball to his friend.",["throw","thrown","threw","throwing"],2,"The past tense of throw is threw."],
+["Choose the best word: The sun ___ bright today.",["are","is","were","am"],1,"'Sun' is one thing, so use 'is'."],
+["Which word is a noun (a naming word)?",["jump","table","soft","slowly"],1,"A table is a thing, so it is a noun."],
+["Choose the best word: Yesterday we ___ to the beach.",["go","goes","went","going"],2,"Yesterday means past tense, so use 'went'."],
+["What goes at the end? Wow, that is amazing__",[".","?","!",","],2,"An exclamation mark shows excitement."],
+["Which sentence has the correct punctuation?",["Mum said, 'Dinner is ready.'","Mum said 'Dinner is ready.","Mum said, Dinner is ready.'","'Mum said, Dinner is ready."],0,"Speech marks go around the words that are spoken."],
+["Choose the best word: My sister and I ___ playing yesterday.",["was","were","is","be"],1,"My sister and I is more than one person, so use 'were'."]],
+read:[
+{p:P1,q:"How many hours a day can koalas sleep?",o:["5","10","20","24"],a:2,e:"The first sentence says up to 20 hours."},
+{p:P1,q:"What is a baby koala called?",o:["A cub","A joey","A pup","A kitten"],a:1,e:"The text says a baby koala is a joey."},
+{p:P1,q:"Why do koalas have very little energy?",o:["They run a lot","They eat eucalyptus leaves","They live in water","They are babies"],a:1,e:"The leaves give them very little energy."},
+{p:P2,q:"Why couldn't Sam go to the park?",o:["He was sick","It was raining","It was night","He had no shoes"],a:1,e:"Sam heard rain on the roof."},
+{p:P2,q:"What did Sam and Dad build?",o:["A boat","A tree house","A castle with a bridge","A tall tower of cards"],a:2,e:"They built a tall castle with a bridge."},
+{p:P2,q:"How did Sam feel at the end?",o:["Sad","Angry","Bored","Happy"],a:3,e:"He decided rainy days were not so bad."},
+{p:P3,q:"Where did Maya plant the seed?",o:["In the garden","In a pot on the windowsill","At school","In the park"],a:1,e:"The seed was planted in a pot on the windowsill."},
+{p:P3,q:"What did Maya do every day?",o:["Moved the pot","Picked the flower","Watered the seed","Sang to it"],a:2,e:"Every day she watered it and watched."},
+{p:P3,q:"What does 'tiny' mean?",o:["Very small","Very tall","Very old","Very loud"],a:0,e:"A tiny shoot is a very small shoot."},
+{p:P3,q:"What happened by summer?",o:["The seed died","A big yellow flower grew","It snowed","Maya moved away"],a:1,e:"A huge yellow flower turned to face the sun."},
+{p:P4,q:"What colour was the kitten?",o:["Black","White","Grey","Orange"],a:2,e:"Ben found a small grey kitten."},
+{p:P4,q:"Why did Ben wrap the kitten in his jumper?",o:["It was shivering","It was dirty","It was hungry","It was asleep"],a:0,e:"The kitten was shivering, so Ben kept it warm."},
+{p:P4,q:"How did Ben try to find the kitten's owner?",o:["Asked the vet","Made posters","Called the police","Went on the radio"],a:1,e:"His mum helped him make posters."},
+{p:P4,q:"Who is Zoe?",o:["Ben's sister","Ben's teacher","The kitten's owner","A vet"],a:2,e:"Zoe knew the kitten's name, Smokey, so it was hers."},
+{p:P1,q:"Why do you think koalas sleep so much?",o:["They are bored","Their food gives them little energy","They are scared","It is always night"],a:1,e:"Eucalyptus leaves give them very little energy, so they rest a lot."},
+{p:P2,q:"How did Sam probably feel when he heard the rain?",o:["Excited","Disappointed","Sleepy","Proud"],a:1,e:"He sighed and said 'No park today', so he was disappointed."},
+{p:P3,q:"What kind of person is Maya?",o:["Careless","Patient","Angry","Lazy"],a:1,e:"She watered and watched the seed for months, which shows patience."},
+{p:P4,q:"What does the story tell you about Ben?",o:["He is kind","He is greedy","He is shy","He is rude"],a:0,e:"He helped a cold kitten and looked for its owner, so he is kind."}]};
+const DB_URL=""; // paste your Firebase Realtime Database URL here, e.g. https://my-project-default-rtdb.firebaseio.com
+const r=(a,b)=>Math.floor(Math.random()*(b-a+1))+a,pk=a=>a[r(0,a.length-1)];
+function mk(q,ans,ds,e){ans=String(ans);const o=[ans];ds.forEach(d=>{d=String(d);if(!o.includes(d))o.push(d)});return{q,o:o.slice(0,4),a:0,e}}
+function near(n){return shuf([n+1,n-1,n+2,n-2,n+10,n-10,n+5,n-5].filter(x=>x>=0&&x!=n)).slice(0,3)}
+let LV=2;const T=(e,m,h)=>LV==1?e:LV==3?h:m;
+const NM=["Mia","Sam","Ava","Leo","Zoe","Ben"],IT=["marbles","stickers","apples","pencils","cards","shells"],PL=["ones","tens","hundreds"];
+const GEN=[
+()=>{const a=r(T(5,11,30),T(30,69,99)),b=r(T(5,11,30),T(30,69,99)),s=a+b;return mk(`What is ${a} + ${b}?`,s,near(s),`Add the tens, then add the ones.`)},
+()=>{const a=r(T(20,40,150),T(50,99,500)),b=r(T(5,11,30),a-T(5,10,20)),s=a-b;return mk(`What is ${a} − ${b}?`,s,near(s),`Take away the tens first, then the ones.`)},
+()=>{const x=pk(T([2,5,10],[2,3,4,5,6,8,10],[3,4,6,7,8,9])),y=r(2,T(5,10,12)),s=x*y;return mk(`What is ${x} × ${y}?`,s,near(s),`${x} groups of ${y} makes ${s}.`)},
+()=>{const x=pk(T([2,5,10],[2,3,4,5,10],[3,4,6,7,8,9])),y=r(2,T(5,10,12)),s=x*y;return mk(`What is ${s} ÷ ${x}?`,y,near(y),`${x} × ${y} = ${s}, so ${s} ÷ ${x} = ${y}.`)},
+()=>{const d=shuf([1,2,3,4,5,6,7,8,9]).slice(0,3),p=r(0,2),n=d[0]*100+d[1]*10+d[2],g=d[2-p],v=g*10**p;return mk(`What is the value of the ${g} in ${n}?`,v,[g,g*10,g*100,g*1000].filter(x=>x!=v).slice(0,3),`The ${g} is in the ${PL[p]} place, so it is worth ${v}.`)},
+()=>{const s=r(2,T(10,20,50)),k=pk(T([2,5,10],[2,3,4,5,10],[3,4,6,7,8,9])),t=[0,1,2,3].map(i=>s+i*k),n=s+4*k;return mk(`What comes next? ${t.join(", ")}, __`,n,near(n),`The pattern goes up by ${k} each time.`)},
+()=>{const a=r(2,T(4,6,9)),b=r(2,T(5,9,12)),n=pk(NM),i=pk(IT);return mk(`${n} has ${a} bags with ${b} ${i} in each. How many ${i} in all?`,a*b,near(a*b),`${a} × ${b} = ${a*b}.`)},
+()=>{const a=pk([2,3,4,5]),b=r(2,8),n=pk(NM),i=pk(IT);return mk(`${n} shares ${a*b} ${i} equally between ${a} friends. How many does each friend get?`,b,near(b),`${a*b} ÷ ${a} = ${b}.`)},
+()=>{const l=r(3,T(6,9,15)),w=r(2,l-1),p=2*(l+w);return mk(`A rectangle is ${l} cm long and ${w} cm wide. How far is it around the outside?`,p+" cm",near(p).map(x=>x+" cm"),`${l} + ${w} + ${l} + ${w} = ${p} cm.`)},
+()=>{const h=r(1,12),m=pk([0,15,30,45]),f=x=>`${h}:${String(x).padStart(2,"0")}`;return mk(`The short hand points at ${h}. The long hand points at ${[12,3,6,9][m/15]}. What time is it?`,f(m),[0,15,30,45].filter(x=>x!=m).map(f),`The long hand on ${[12,3,6,9][m/15]} means ${m} minutes past the hour.`)},
+()=>{const p=r(2,9),b=pk([10,20]),c=b-p;return mk(`A toy costs $${p}. You pay with a $${b} note. How much change do you get?`,"$"+c,near(c).map(x=>"$"+x),`${b} − ${p} = ${c}.`)},
+()=>{const n=r(5,45)*2;return mk(`What is half of ${n}?`,n/2,near(n/2),`Half means sharing into 2 equal groups.`)},
+()=>{const s=pk([["triangle",3],["square",4],["pentagon",5],["hexagon",6],["octagon",8]]);return mk(`How many sides does a ${s[0]} have?`,s[1],shuf([3,4,5,6,8,7].filter(x=>x!=s[1])).slice(0,3),`A ${s[0]} has ${s[1]} sides.`)},
+()=>{const d=pk([2,3,4,5]),k=r(2,6);return mk(`What is 1/${d} of ${d*k}?`,k,near(k),`Share ${d*k} into ${d} equal groups: ${k} in each.`)},
+()=>{const a=[];while(a.length<4){const x=r(100,999);if(!a.includes(x))a.push(x)}const big=Math.random()<.5,m=big?Math.max(...a):Math.min(...a);return mk(`Which is the ${big?"biggest":"smallest"} number?`,m,a.filter(x=>x!=m),`Compare the hundreds first, then the tens.`)}];
+const WORDS="beautiful|beutiful|beautifull|butiful;friend|freind|frend|firend;because|becuase|becose|becasue;people|peple|poeple|peeple;library|libary|liberry|librery;Wednesday|Wensday|Wendsday|Wedsday;different|diffrent|diferent|differant;favourite|favorit|favurite|faverite;answer|anser|answar|ansour;island|iland|ilend|iisland;school|scool|shool|schoool;bought|bort|bouht|baught;through|thru|throgh|thorugh;thought|thort|thougt|thoght;enough|enuff|enogh|inough;laugh|laff|lagh|larf;weather|wether|wheather|wheter;tomorrow|tommorow|tomorow|tommorrow;animal|animul|anamal|animall;birthday|birthdey|burthday|berthday;holiday|holliday|holidey|holaday;elephant|elephent|elefant|elaphant;chocolate|choclate|chocolat|chocolete;dinosaur|dinasaur|dinosor|dinosuar;orange|orenge|oringe|orang;water|watter|warter|wader;sandwich|sandwhich|sanwich|sandwitch;group|grup|groop|groupe;double|dubble|doble|doubel;journey|jurney|journy|jerney".split(";");
+const spq=w=>{const[c,...x]=w.split("|");return{q:"Which word is spelled correctly?",o:[c,...x],a:0,e:`The correct spelling is "${c}".`}};
+GEN.push(
+()=>{const a=r(T(5,11,30),T(30,69,99)),b=r(T(5,11,30),T(30,69,99)),n=pk(NM),i=pk(IT);return mk(`${n} has ${a} ${i}. Then ${n} gets ${b} more. How many ${i} now?`,a+b,near(a+b),`Add: ${a} + ${b} = ${a+b}.`)},
+()=>{const a=r(T(5,11,30),T(30,60,99)),b=r(T(5,11,30),T(30,60,99));return mk(`What number goes in the box? __ + ${b} = ${a+b}`,a,near(a),`${a+b} − ${b} = ${a}.`)},
+()=>{const a=r(T(20,40,150),T(50,99,500)),b=r(T(5,11,30),a-T(5,10,20)),n=pk(NM),i=pk(IT);return mk(`${n} had ${a} ${i} and gave away ${b}. How many are left?`,a-b,near(a-b),`${a} − ${b} = ${a-b}.`)},
+()=>{const a=r(T(20,40,150),T(50,99,500)),b=r(T(5,11,30),a-T(5,10,20));return mk(`What number goes in the box? ${a} − __ = ${a-b}`,b,near(b),`${a} − ${b} = ${a-b}.`)});
+const GG={add:[0,15,16],sub:[1,17,18],mul:[2,6],div:[3,7],place:[4,5,14],frac:[11,13],tm:[9,10],geo:[8,12]};
+const H={add:"Maths skills",spell:"English",mix:"Mix it up"};
+const TW={1:"friend because people school water orange group animal island answer",2:"beautiful library Wednesday different favourite birthday holiday bought double sandwich",3:"through thought enough laugh weather tomorrow elephant chocolate dinosaur journey"};
+const GT={1:[2,3,5,9,14,15,16,23,24],2:[0,1,4,6,7,11,12,13,20,25,26],3:[8,10,17,18,19,21,22,27,28]};
+Q.read.forEach((x,i)=>x.t=[1,1,2,1,1,2,1,1,2,2,1,2,2,3,3,3,3,3][i]);
+const app=document.getElementById("app");
+let S=null,REMOTE=null;
+function code(){try{return localStorage.getItem("n3code")||""}catch(e){return""}}
+function dbu(){return DB_URL.replace(/\/$/,"")+"/naplan/"+encodeURIComponent(code())+"/attempts.json"}
+async function post(a){if(!DB_URL||!code())return;try{await fetch(dbu(),{method:"POST",body:JSON.stringify(a)})}catch(e){}}
+async function sync(){if(!DB_URL||!code())return;try{const d=await(await fetch(dbu())).json();REMOTE=d?Object.values(d):[]}catch(e){}}
+function hist(){try{return JSON.parse(localStorage.getItem("n3hist")||"[]")}catch(e){return[]}}
+function level(k){const L=(DB_URL&&code()&&REMOTE)?REMOTE:hist();let v=2;L.filter(a=>a.k==k).sort((a,b)=>a.t-b.t).slice(-10).forEach(a=>{const x=a.s/a.n;if(x>=.9)v=Math.min(3,v+1);else if(x<.5)v=Math.max(1,v-1)});return v}
+function best(){const b=Object.assign({},load());(REMOTE||[]).forEach(a=>{if(a.n==10&&(b[a.k]==null||a.s>b[a.k]))b[a.k]=a.s});return b}
+function setCode(){const v=document.getElementById("fc").value.trim().toLowerCase();try{localStorage.setItem("n3code",v)}catch(e){}REMOTE=null;sync().then(home)}
+function progress(){
+const a=(REMOTE||[]).slice().sort((x,y)=>y.t-x.t),by={};
+a.forEach(x=>{(by[x.k]=by[x.k]||[]).push(x.s/x.n)});
+app.innerHTML=`<button class="ghost" onclick="home()">← Back</button><h1>📊 Progress</h1>`+(a.length?`<div class="card">`+Object.keys(by).map(k=>`<p><b>${SUBJ[k].i} ${SUBJ[k].n}</b>: ${Math.round(by[k].reduce((p,c)=>p+c,0)/by[k].length*100)}% average over ${by[k].length} tries</p>`).join("")+`</div><div class="card" style="margin-top:12px"><b>Recent tries</b>`+a.slice(0,15).map(x=>`<p style="margin:6px 0">${new Date(x.t).toLocaleDateString("en-AU")} · ${SUBJ[x.k].n} · <b>${x.s}/${x.n}</b>${x.ms?" · "+Math.round(x.ms/x.n/1000)+"s per question":""}${x.rv?" · "+x.rv+" to revise":""}</p>`).join("")+`</div>`:`<p class="sub">No shared results yet. ${DB_URL&&code()?"Finish a quiz and it will show up here.":"Sharing needs a database URL and a family code."}</p>`)}
+function load(){try{return JSON.parse(localStorage.getItem("naplan3")||"{}")}catch(e){return{}}}
+function save(k,v){try{const d=load();d[k]=Math.max(d[k]||0,v);localStorage.setItem("naplan3",JSON.stringify(d))}catch(e){}}
+function shuf(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function norm(x){return Array.isArray(x)?{q:x[0],o:x[1],a:x[2],e:x[3]}:x}
+function home(){
+if(S)clearInterval(S.iv);
+const b=best();
+app.innerHTML=`<h1>🎒 NAPLAN Year 3 Practice</h1><p class="sub">Pick a topic and have a go. Take your time and read each question carefully! 🪙 ${coins()} coins collected</p><div class="grid">`+
+Object.entries(SUBJ).map(([k,v])=>(H[k]?`<h3 class="sub" style="margin:10px 0 0">${H[k]}</h3>`:"")+`<button class="card sub-btn" onclick="start('${k}')"><span class="ico">${v.i}</span><span><b>${v.n}</b><small>${v.d}</small></span><span class="best">${b[k]!=null?"Best: "+b[k]+"/10":""}${k!="mix"&&k!="words"?"<br>Level: "+["","Easy","Standard","Challenge"][level(k)]:""}</span></button>`).join("")+`</div><div class="card" style="margin-top:14px"><b>⏱ Beat the clock</b><p class="sub" style="margin:4px 0 0;font-size:.85rem">Race the 🐇 to the 🏁 before time runs out. Quick answers earn bonus coins. Time's up counts as a miss and comes back for revision. Reading questions get 20 extra seconds.</p>${[[0,"Relaxed"],[60,"Slow 60s"],[40,"Normal 40s"],[25,"Fast 25s"]].map(([v,l])=>`<button class="pill${getLim()==v?" on":""}" onclick="setLim(${v})">${l}</button>`).join("")}<button class="pill${sOn()?" on":""}" onclick="togSnd()">🔊 Sound</button></div><div class="card" style="margin-top:14px"><b>👪 Family code</b><p class="sub" style="margin:4px 0 8px;font-size:.85rem">${DB_URL?"Type the same code on every device to share scores.":"Sharing is not switched on yet (no database URL set)."}</p><input id="fc" value="${code()}" placeholder="e.g. blue-koala-42" style="font:inherit;padding:10px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);width:55%"> <button class="go" style="padding:10px 16px" onclick="setCode()">Save</button><br><button class="ghost" onclick="sync().then(progress)">📊 View progress</button></div><p class="sub" style="margin-top:18px;font-size:.85rem">This is a practice site with sample-style questions. It is not an official NAPLAN test. Writing practice: ask a grown-up to give you a story topic and write for 20 minutes!</p>`}
+function start(k){
+if(k=="words")return wordLab();
+let pool;LV=level("num");
+const g=n=>Array.from({length:n},()=>pk(GEN)()),
+tier=(a,L,n)=>{const adj=L==2?pk([1,3]):2,m=Math.round(n*.7);return shuf([...shuf(a(L)).slice(0,m),...shuf(a(adj)).slice(0,n-m)])},
+sp=(n,L)=>tier(t=>WORDS.filter(w=>TW[t].split(" ").includes(w.split("|")[0])),L,n).map(spq),
+gr=(n,L)=>tier(t=>GT[t].map(i=>Q.gram[i]),L,n),
+rd=L=>{const ps=shuf([P1,P2,P3,P4]).slice(0,3);return Q.read.filter(x=>ps.includes(x.p)&&(L==1?x.t<3:L==3?x.t>1:true))};
+if(k=="mix")pool=shuf([...g(4),...sp(2,level("spell")),...gr(2,level("gram")),...shuf(Q.read).slice(0,2)]);
+else if(GG[k]){LV=level(k);pool=Array.from({length:10},()=>GEN[pk(GG[k])]())}
+else if(k=="num")pool=g(10);
+else if(k=="spell")pool=sp(10,level("spell"));
+else if(k=="read")pool=rd(level("read"));
+else pool=gr(10,level("gram"));
+pool=pool.map(norm);pool.forEach((x,i)=>x.id=i);
+S={k,qs:pool,i:0,score:0,d:0,total:pool.length,log:[],miss:{},lim:getLim(),coins:0,streak:0,bs:0};show()}
+const WL=`beautiful|beau·ti·ful|very nice to look at|The garden looks beautiful in spring.
+friend|friend|someone you like and enjoy being with|My friend shared her lunch with me.
+because|be·cause|used to give a reason|I wore a coat because it was cold.
+people|peo·ple|more than one person|Lots of people came to the party.
+library|li·brar·y|a place where you borrow books|We read quietly in the library.
+Wednesday|Wednes·day|the day after Tuesday|We have swimming on Wednesday.
+different|dif·fer·ent|not the same|My shoes are different colours.
+favourite|fav·our·ite|the one you like best|Blue is my favourite colour.
+answer|an·swer|what you say or write when someone asks a question|I knew the answer to the sum.
+island|is·land|land with water all around it|We sailed to a small island.
+school|school|a place where children learn|I walk to school with my brother.
+bought|bought|got something by paying for it|Mum bought me a new pencil case.
+through|through|going in one side and out the other|The train went through the tunnel.
+thought|thought|an idea in your mind, or the past of think|I thought about my story all day.
+enough|e·nough|as much as you need|We have enough apples for everyone.
+laugh|laugh|to make a happy sound when something is funny|The joke made us all laugh.
+weather|weath·er|how hot, cold, wet or windy it is outside|The weather is sunny today.
+tomorrow|to·mor·row|the day after today|We are going to the zoo tomorrow.
+animal|an·i·mal|a living thing that is not a plant|A koala is an animal.
+birthday|birth·day|the day each year that you were born|I am having a party on my birthday.
+holiday|hol·i·day|time away from school or work|We went to the beach on holiday.
+elephant|el·e·phant|a huge grey animal with a long trunk|The elephant sprayed water with its trunk.
+chocolate|choc·o·late|a sweet brown treat|I ate a piece of chocolate.
+dinosaur|di·no·saur|a giant reptile that lived long ago|The dinosaur skeleton was enormous.
+orange|or·ange|a round fruit, or a colour|I peeled an orange for snack.
+water|wa·ter|the clear liquid we drink|Please drink some water.
+sandwich|sand·wich|food made with two slices of bread|I had a cheese sandwich for lunch.
+group|group|a number of people or things together|Our group built a model.
+double|dou·ble|two times as much|Double four is eight.
+journey|jour·ney|a trip from one place to another|The journey to Nan's took two hours.`.split("\n").map(l=>{const[w,sy,m,e]=l.split("|");return{w,sy,m,e}});
+let W=null;
+function known(){try{return JSON.parse(localStorage.getItem("n3known")||"[]")}catch(e){return[]}}
+function setKnown(a){try{localStorage.setItem("n3known",JSON.stringify(a))}catch(e){}}
+function say(t){try{const u=new SpeechSynthesisUtterance(t);u.lang="en-AU";u.rate=.8;speechSynthesis.cancel();speechSynthesis.speak(u)}catch(e){}}
+function wordLab(){
+if(S)clearInterval(S.iv);
+const k=known(),B=(m,i,n,d)=>`<button class="card sub-btn" onclick="wl('${m}')"><span class="ico">${i}</span><span><b>${n}</b><small>${d}</small></span></button>`;
+app.innerHTML=`<button class="ghost" onclick="home()">← Back</button><h1>🔤 Word Lab</h1><p class="sub">${k.length} of ${WL.length} words learned</p><div class="bar"><i style="width:${k.length/WL.length*100}%"></i></div><div class="grid">`+
+B("cards","📇","Flashcards","Hear the word, see what it means, read it in a sentence")+
+B("lcwc","👀","Look, Cover, Write, Check","Study the word, cover it, then spell it from memory")+
+B("listen","🎧","Listen & Spell","Listen to the word and type it")+
+`</div><button class="ghost" style="margin-top:14px" onclick="if(confirm('Reset all learned words?')){setKnown([]);wordLab()}">Reset learned words</button>`}
+function wl(m){const k=known();let d=shuf(WL.filter(x=>!k.includes(x.w)));if(!d.length)d=shuf(WL.slice());W={m,d,i:0,t:0};wnext()}
+function wnext(){
+if(W.i>=W.d.length)return wend();
+const x=W.d[W.i],top=`<button class="ghost" onclick="wordLab()">← Word Lab</button><div class="bar"><i style="width:${W.i/W.d.length*100}%"></i></div>`;
+if(W.m=="cards"){
+app.innerHTML=top+`<div class="card center"><p class="big" style="font-size:2.4rem">${x.w}</p><p class="sub">${x.sy}</p><button class="pill" onclick="say(W.d[W.i].w)">🔊 Hear it</button><p><b>Meaning:</b> ${x.m}</p><p>💬 <i>${x.e}</i></p><button class="pill" onclick="say(W.d[W.i].e)">🔊 Hear the sentence</button></div><div class="center" style="margin-top:14px"><button class="go" onclick="wk(1)">✅ I know it</button> <button class="pill" onclick="wk(0)">🔁 Need more practice</button></div>`;say(x.w);return}
+const lc=W.m=="lcwc";
+app.innerHTML=top+`<div class="card center">${lc?`<p class="sub">Look carefully, then cover it!</p><p class="big" style="font-size:2.4rem" id="ww">${x.w}</p><p class="sub" id="ws">${x.sy}</p>`:`<p class="sub">Listen, then type the word</p><p class="big" id="ww">🎧</p>`}<button class="pill" onclick="say(W.d[W.i].w)">🔊 Hear it</button>${lc?`<button class="pill" onclick="cover()">🙈 Cover it</button>`:`<button class="pill" onclick="document.getElementById('hn').textContent='Meaning: '+W.d[W.i].m">💡 Meaning</button>`}<p id="hn" class="sub"></p><div id="wi" style="display:${lc?"none":"block"}"><input id="ans" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="Type the word" onkeydown="if(event.key=='Enter')wcheck()" style="font:inherit;font-size:1.3rem;padding:10px;border-radius:12px;border:2px solid var(--line);background:var(--bg);color:var(--ink);width:80%;text-align:center"><br><br><button class="go" onclick="wcheck()">Check ✔️</button></div><div id="wf"></div></div>`;
+if(!lc){say(x.w);document.getElementById("ans").focus()}}
+function cover(){document.getElementById("ww").textContent="🙈";document.getElementById("ws").textContent="Now spell it from memory";document.getElementById("wi").style.display="block";document.getElementById("ans").focus()}
+function wk(ok){const x=W.d[W.i];if(ok){const k=known();if(!k.includes(x.w))setKnown(k.concat(x.w))}else W.d.push(x);W.i++;wnext()}
+function wcheck(){
+const x=W.d[W.i],v=document.getElementById("ans").value.trim().toLowerCase();if(!v)return;
+const ok=v==x.w.toLowerCase(),f=document.getElementById("wf");
+if(ok){snd(660,.1);if(!W.t){const k=known();if(!k.includes(x.w))setKnown(k.concat(x.w));try{localStorage.setItem("n3coins",coins()+3)}catch(e){}}
+f.innerHTML=`<div class="fb"><span class="pop">✅ <b>Correct!</b> ${W.t?"":"+3 🪙"}</span><br><small>${x.e}</small></div><button class="go" onclick="W.i++;W.t=0;wnext()">Next word →</button>`}
+else{snd(180,.25);W.t++;f.innerHTML=`<div class="fb">❌ You wrote <b>${v.replace(/</g,"&lt;")}</b>. The word is <b>${x.w}</b> <small>(${x.sy})</small></div><button class="go" onclick="wnext()">Try again</button> <button class="pill" onclick="W.d.push(W.d[W.i]);W.i++;W.t=0;wnext()">Practise later</button>`}}
+function wend(){const k=known();app.innerHTML=`<div class="card center"><p class="big">🎉</p><h1>Deck finished!</h1><p>${k.length} of ${WL.length} words learned.</p><button class="go" onclick="wl('${W.m}')">Go again</button><br><button class="ghost" onclick="wordLab()">Back to Word Lab</button></div>`}
+function getLim(){try{return +localStorage.getItem("n3lim")||0}catch(e){return 0}}
+function setLim(v){try{localStorage.setItem("n3lim",v)}catch(e){}home()}
+function sOn(){try{return localStorage.getItem("n3snd")!="0"}catch(e){return true}}
+function togSnd(){try{localStorage.setItem("n3snd",sOn()?"0":"1")}catch(e){}home()}
+function coins(){try{return +localStorage.getItem("n3coins")||0}catch(e){return 0}}
+function snd(f,d){try{if(!sOn())return;const c=snd.c=snd.c||new(window.AudioContext||window.webkitAudioContext)(),o=c.createOscillator(),g=c.createGain();o.frequency.value=f;g.gain.value=.05;o.connect(g);g.connect(c.destination);o.start();o.stop(c.currentTime+d)}catch(e){}}
+function show(){
+clearInterval(S.iv);
+const q=S.qs[S.i],pct=S.d/S.total*100,ord=shuf(q.o.map((t,i)=>i));
+S.t0=Date.now();const lim=S.lim?S.lim+(q.p?20:0):0;
+app.innerHTML=`<button class="ghost" onclick="home()">← Back</button><div class="bar"><i style="width:${pct}%"></i></div><div class="card"><div style="display:flex;justify-content:space-between;color:var(--mut);font-size:.9rem;margin-bottom:6px"><span>${q.rev?"🔁 Revision: you missed this one, try again":"Question "+(S.d+1)+" of "+S.total}</span><span>🔥${S.streak} 🪙${S.coins}</span></div>${lim?`<div class="track"><div id="tb" class="tbar"></div><span id="rn" class="rn">🐇</span><span class="fin">🏁</span></div><div id="tm" class="tmt">⏱ ${lim}s left</div>`:`<div id="tm" class="tmt">⏱ 0s</div>`}${q.p?`<div class="passage">${q.p}</div>`:""}<div class="q">${q.q}</div>`+
+ord.map(i=>`<button class="opt" data-i="${i}" onclick="pick(${i})">${q.o[i]}</button>`).join("")+`<div id="fb"></div></div>`;
+S.iv=setInterval(()=>{const e=Date.now()-S.t0,tm=document.getElementById("tm");if(!tm)return;
+if(!lim){tm.textContent="⏱ "+Math.floor(e/1000)+"s";return}
+const f=Math.min(1,e/(lim*1000)),tb=document.getElementById("tb"),rn=document.getElementById("rn");
+tm.textContent="⏱ "+Math.max(0,Math.ceil(lim-e/1000))+"s left"+(f>.75?" 😬":f<.5?" 🙂":"");
+tb.style.width=f*100+"%";tb.style.background="hsl("+Math.round(120*(1-f))+",75%,45%)";rn.style.left=Math.max(0,f*(tb.parentNode.offsetWidth-30))+"px";
+if(f>=1){clearInterval(S.iv);pick(-1)}},100)}
+function pick(i){
+clearInterval(S.iv);
+const q=S.qs[S.i],right=i==q.a,ms=Date.now()-S.t0,lm=S.lim?S.lim+(q.p?20:0):0;
+document.querySelectorAll(".opt").forEach(b=>{b.disabled=true;const n=+b.dataset.i;if(n==q.a)b.classList.add("ok");else if(n==i)b.classList.add("bad")});
+S.log.push({q:q.q,ok:right,ms,rev:!!q.rev});
+let pts=0;if(right){S.d++;if(q.rev)pts=2;else{S.score++;pts=10+(lm&&ms<lm*500?5:0)+Math.min(S.streak,5);S.streak++;S.bs=Math.max(S.bs,S.streak)}S.coins+=pts;snd(660,.1)}
+else{S.streak=0;snd(180,.25);const cd=document.querySelector(".card");if(cd)cd.classList.add("shake");const m=S.miss[q.id]=S.miss[q.id]||{q:q.q,ans:q.o[q.a],e:q.e,tries:0};m.tries++;S.qs.splice(S.i+1,0,Object.assign({},q,{rev:true}))}
+const last=S.i==S.qs.length-1;
+document.getElementById("fb").innerHTML=`<div class="fb">${right?`<span class="pop">✅ <b>Correct!</b> +${pts} 🪙${pts>=15?" ⚡":""}</span> `:i<0?"⏰ <b>Time's up!</b> ":"❌ <b>Not quite.</b> "}${q.e}${right?"":"<br><b>You'll get this one again next, so you can try again.</b>"} <br><small>⏱ ${(ms/1000).toFixed(0)}s</small></div><button class="go" onclick="next()">${last?"See my score":"Next →"}</button>`}
+function next(){S.i++;S.i<S.qs.length?show():done()}
+function done(){
+clearInterval(S.iv);
+const n=S.total,s=S.score,st=s/n>=.9?3:s/n>=.7?2:s/n>=.4?1:0;
+if(n==10)save(S.k,s);
+const ms=S.log.reduce((a,x)=>a+x.ms,0),miss=Object.values(S.miss),fm=x=>Math.round(x/1000)+"s";try{localStorage.setItem("n3coins",coins()+S.coins)}catch(e){}
+const L0=level(S.k),at={t:Date.now(),k:S.k,s,n,ms,rv:miss.length};post(at);if(DB_URL&&code())REMOTE=(REMOTE||[]).concat([at]);try{const h=hist();h.push(at);localStorage.setItem("n3hist",JSON.stringify(h.slice(-40)))}catch(e){}const L1=level(S.k);
+const msg=st==3?"Superstar! Amazing work!":st==2?"Great job! Nearly there!":st==1?"Good effort! Practice makes perfect.":"Keep trying, you will get better each time!";
+const first=S.log.filter(x=>!x.rev);
+app.innerHTML=`<div class="card center"><p class="big">${st==3?"🏆":st==2?"🎉":"💪"}</p><h1>${s} / ${n}</h1><div class="stars">${"⭐".repeat(st)}${"☆".repeat(3-st)}</div><p>${msg}</p>${S.k!="mix"&&L1!=L0?(L1>L0?"<p><b>⬆️ Level up! The questions get trickier.</b></p>":"<p>⬇️ Next time will be a little easier.</p>"):""}<p>⏱ Total ${fm(ms)} · about ${fm(ms/S.log.length)} per answer</p><p>🪙 +${S.coins} coins · 🔥 best streak ${S.bs}</p><button class="go" onclick="start('${S.k}')">Try again</button><br><button class="ghost" onclick="home()">Back to topics</button></div>`+
+(miss.length?`<div class="card" style="margin-top:12px"><b>🔁 Questions to revise</b>`+miss.map(m=>`<p style="margin:10px 0"><b>${m.q}</b><br>✅ ${m.ans}<br><small>${m.e} (missed ${m.tries}×)</small></p>`).join("")+`</div>`:`<div class="card" style="margin-top:12px">🎯 No mistakes to revise. Well done!</div>`)+
+`<div class="card" style="margin-top:12px"><b>⏱ Time per question</b>`+first.map((x,i)=>`<p style="margin:6px 0">${i+1}. ${x.q.length>48?x.q.slice(0,48)+"…":x.q} <b>${fm(x.ms)}</b> ${x.ok?"✅":"❌"}</p>`).join("")+`</div>`}
+home();sync().then(()=>{if(document.querySelector(".sub-btn"))home()});
+</script></body></html>
